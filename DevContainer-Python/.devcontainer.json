@@ -1,0 +1,9 @@
+{
+  "name": "devcontainer-python",
+  "dockerComposeFile": [
+    "../docker-compose.yml"
+  ],
+  "service": "devcontainer-python",
+  "shutdownAction": "none",
+  "workspaceFolder": "/workspace/DevContainer-Python",
+}

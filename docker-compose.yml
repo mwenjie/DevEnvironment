@@ -1,0 +1,33 @@
+version: '3.2'
+services:
+  devcontainer-dotnet:
+    image: mcr.microsoft.com/devcontainers/dotnet:0-6.0
+    volumes:
+      - .:/workspace:cached
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    networks:
+      - api_net
+    ports:
+        - "7000:7000"
+  devcontainer-python:
+    build:
+        context: ./DevContainer-Python
+        dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: '0.90'
+          memory: 4000M
+    volumes:
+      - .:/workspace:cached
+      - model:/model
+    working_dir: /workspace/DevContainer-Python
+    command: tail -F anything
+    networks:
+      - api_net
+    ports:
+      - "8000:8000"
+volumes:
+  model:      
+networks:
+  api_net:

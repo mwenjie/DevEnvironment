@@ -1,0 +1,9 @@
+{
+  "name": "devcontainer-dotnet",
+  "dockerComposeFile": [
+    "../docker-compose.yml"
+  ],
+  "service": "devcontainer-dotnet",
+  "shutdownAction": "none",
+  "workspaceFolder": "/workspace/DevContainer-Dotnet",
+}
