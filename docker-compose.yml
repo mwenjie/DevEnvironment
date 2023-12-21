@@ -11,8 +11,8 @@ services:
         - "7000:7000"
   devcontainer-python:
     build:
-        context: ./DevContainer-Python
-        dockerfile: Dockerfile
+      context: ./DevContainer-Python
+      dockerfile: Dockerfile
     deploy:
       resources:
         limits:
