@@ -1,0 +1,58 @@
+@page "/chatbot"
+@using BlazorApp.Data
+@using System.Linq;
+@inject IChatBotService _chatbotService
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <MudPaper Class="gap-4 flex pa-4">
+        <div class="chatsection">
+            @foreach (KeyValuePair<int, string> kvp in Utters)
+            {
+                <MudPaper Class="d-flex justify-start flex-grow-1 gap-4" Elevation="0">
+                    <MudPaper Style="@($"background:{Colors.Grey.Lighten2};")">
+                        <MudText Margin="Margin.Dense" Class="pl-1" DisableUnderLine="true">@kvp.Value</MudText>
+                    </MudPaper>
+                </MudPaper>
+
+                @if (Responses.ContainsKey(kvp.Key))
+                {
+                    <MudPaper Class="d-flex justify-end flex-grow-1 gap-4" Elevation="0">
+                        <MudPaper Style="@($"background:rgba(89,74,226,1);")">
+                            <MudText Margin="Margin.Dense" Class="pl-1" Style="@($"color:{Colors.Grey.Lighten5};")"
+                                DisableUnderLine="true">@Responses[kvp.Key]</MudText>
+                        </MudPaper>
+                    </MudPaper>
+                }
+            }
+        </div>
+
+        <div Class="d-flex inputsection py-2">
+            <MudTextField @bind-Value="InputValue" DisableUnderLine="true" Label="Type a Message"
+                Variant="Variant.Outlined" Margin="Margin.Dense">
+            </MudTextField>
+            <MudButton Class="my-1" Variant="Variant.Filled" Color="Color.Primary" OnClick="Submit">Send</MudButton>
+        </div>
+    </MudPaper>
+</MudContainer>
+
+
+@code {
+    public string InputValue { get; set; } = "";
+    public string UtterValue { get; set; } = "";
+    public string ResponseValue { get; set; } = "";
+    IDictionary<int, string> Utters = new Dictionary<int, string>();
+    IDictionary<int, string> Responses = new Dictionary<int, string>();
+    int counter = 0;
+
+    async Task Submit()
+    {
+        UtterValue = InputValue;
+        Utters.Add(counter, InputValue);
+        InputValue = "";
+        StateHasChanged();
+        var response = await _chatbotService.Chat(UtterValue);
+        Responses.Add(counter, response);
+        StateHasChanged();
+        counter++;
+    }
+}
